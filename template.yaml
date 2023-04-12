@@ -4,9 +4,23 @@ Description: >
   Serverless Form Handler - accepts a form submission from a webpage, saving the data to a DynamoDB table and sending an email via SES.
 
 Parameters:
-  ValidatedEmail:
+  SourceEmail:
     Type: String
     Description: (Required) A validated SES email address for receiving new submissions.
+    MaxLength: 70
+    Default: validated@email.com
+    MinLength: 4
+    ConstraintDescription: Required. Must be a SES verified email address.
+  TargetEmail:
+    Type: String
+    Description: (Required) A validated SES email address for sending email about new submissions to.
+    MaxLength: 70
+    Default: validated@email.com
+    MinLength: 4
+    ConstraintDescription: Required. Must be a SES verified email address.
+  TargetBackupEmail:
+    Type: String
+    Description: (Required) A validated SES email address for sending email about new submissions to.
     MaxLength: 70
     Default: validated@email.com
     MinLength: 4
@@ -18,10 +32,10 @@ Globals:
     Timeout: 10
   Api:
     EndpointConfiguration: EDGE
-    Cors: 
+    Cors:
       AllowMethods: "'OPTIONS,POST'"
       AllowHeaders: "'Content-Type'"
-      AllowOrigin: "'*'"    
+      AllowOrigin: "'*'"
 
 Resources:
   FormDataTable:
@@ -43,13 +57,15 @@ Resources:
       MemorySize: 128
       Environment:
         Variables:
-          ValidatedEmail: !Ref ValidatedEmail
+          SourceEmail: !Ref SourceEmail
+          TargetEmail: !Ref TargetEmail
+          TargetBackupEmail: !Ref TargetBackupEmail
           FormDataTable: !Ref FormDataTable
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref FormDataTable
         - SESCrudPolicy:
-            IdentityName: !Ref ValidatedEmail
+            IdentityName: !Ref SourceEmail
       Events:
         HttpPost:
           Type: Api

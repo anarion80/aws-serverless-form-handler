@@ -28,15 +28,15 @@ const sendEmail = async function (formData) {
     }
     return retval
   }
-  
+
   return new Promise(async (resolve, reject) => {
 
     // Build params for SES
     const emailParams = {
-      Source: process.env.ValidatedEmail, // SES SENDING EMAIL
-      ReplyToAddresses: [process.env.ValidatedEmail],
+      Source: process.env.SourceEmail, // SES SENDING EMAIL
+      ReplyToAddresses: [formData["Email"]],
       Destination: {
-        ToAddresses: [process.env.ValidatedEmail], // SES RECEIVING EMAIL
+        ToAddresses: [process.env.TargetEmail, process.env.TargetBackupEmail], // SES RECEIVING EMAIL
       },
       Message: {
         Body: {
@@ -47,7 +47,7 @@ const sendEmail = async function (formData) {
         },
         Subject: {
           Charset: 'UTF-8',
-          Data: 'New Form Submission'
+          Data: 'Nowe zgłoszenie z forumlarza kontaktowego PTTK Staszów'
         },
       },
     }

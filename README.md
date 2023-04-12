@@ -29,7 +29,7 @@ Important: this application uses various AWS services and there are costs associ
 
 ## Parameter Details
 
-* Validated email: provided an email address that has been validated in the Amazon SES service in the same region when you are deploying this application. For instructions on how to validate an email in SES, see [this page](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/verify-email-addresses-procedure.html).
+* Source email/Target email/Target Backup email: provided an email address that has been validated in the Amazon SES service in the same region when you are deploying this application. For instructions on how to validate an email in SES, see [this page](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/verify-email-addresses-procedure.html).
 
 ## Using this Application
 

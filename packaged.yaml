@@ -12,6 +12,20 @@ Parameters:
     Default: validated@email.com
     MinLength: 4
     ConstraintDescription: Required. Must be a SES verified email address.
+  TargetEmail:
+    Type: String
+    Description: (Required) A validated SES email address for sending email about new submissions to.
+    MaxLength: 70
+    Default: validated@email.com
+    MinLength: 4
+    ConstraintDescription: Required. Must be a SES verified email address.
+  TargetBackupEmail:
+    Type: String
+    Description: (Required) A validated SES email address for sending email about new submissions to.
+    MaxLength: 70
+    Default: validated@email.com
+    MinLength: 4
+    ConstraintDescription: Required. Must be a SES verified email address.
 Globals:
   Function:
     Timeout: 10
@@ -41,8 +55,12 @@ Resources:
       MemorySize: 128
       Environment:
         Variables:
-          ValidatedEmail:
-            Ref: ValidatedEmail
+          SourceEmail:
+            Ref: SourceEmail
+          TargetEmail:
+            Ref: TargetEmail
+          TargetBackupEmail:
+            Ref: TargetBackupEmail
           FormDataTable:
             Ref: FormDataTable
       Policies:
@@ -51,7 +69,7 @@ Resources:
             Ref: FormDataTable
       - SESCrudPolicy:
           IdentityName:
-            Ref: ValidatedEmail
+            Ref: SourceEmail
       Events:
         HttpPost:
           Type: Api
